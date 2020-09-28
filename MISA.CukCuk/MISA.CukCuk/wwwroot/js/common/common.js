@@ -2,6 +2,7 @@
  * Đối tượng js chứa tất cả các hàm sửu dụng
  * Author: TDNAM(27/09/2020)
  * --------------------------------------*/
+
 var commonJS = {
     formatMoney(money) {
         return money.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");

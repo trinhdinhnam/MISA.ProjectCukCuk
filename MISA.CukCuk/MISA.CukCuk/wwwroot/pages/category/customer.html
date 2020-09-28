@@ -136,10 +136,10 @@
             </div>
             <div class="grid-content">
                 <div class="toolbar">
-                    <button class="toolbar-btn-add"><i class="icon icon-add"></i>Thêm</button>
-                    <button class="toolbar-btn-coppy"><i class="icon icon-copy"></i>Nhân bản</button>
-                    <button class="toolbar-btn-edit"><i class="icon icon-edit"></i>Sửa</button>
-                    <button class="toolbar-btn-del"><i class="icon icon-del"></i>Xóa</button>
+                    <button class="toolbar-btn-add" id="toolbar-btn-add"><i class="icon icon-add"></i>Thêm</button>
+                    <button class="toolbar-btn-coppy" id="toolbar-btn-coppy"><i class="icon icon-copy"></i>Nhân bản</button>
+                    <button class="toolbar-btn-edit" id="toolbar-btn-edit"><i class="icon icon-edit"></i>Sửa</button>
+                    <button class="toolbar-btn-del" id="toolbar-btn-del"><i class="icon icon-del"></i>Xóa</button>
                     <button id="toolbar-btn-load"><i class="icon icon-load"></i>Nạp</button>
                     <button><i class="icon icon-input"></i>Nhập khẩu</button>
                     <button><i class="icon icon-output"></i>Xuất khẩu</button>
@@ -152,15 +152,14 @@
                     <table id="tbCustomer">
                         <thead>
                             <tr>
-                                <th>Mã khách hàng</th>
-                                <th>Tên khách hàng</th>
-                                <th>Tên công ty</th>
-                                <th>Mã số thuế</th>
-                                <th>Địa chỉ</th>
-                                <th>Số điện thoại</th>
-                                <th>Email</th>
-                                <th>Ngày sinh</th>
-
+                                <th fieldName="CustomerId">Mã khách hàng</th>
+                                <th fieldName="CustomerName">Tên khách hàng</th>
+                                <th fieldName="ManageName">Tên công ty</th>
+                                <th fieldName="TaxId">Mã số thuế</th>
+                                <th fieldName="Address">Địa chỉ</th>
+                                <th fieldName="Phone">Số điện thoại</th>
+                                <th fieldName="Email">Email</th>
+                                <th fieldName="DateOfBirth">Ngày sinh</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -236,7 +235,7 @@
 
             <div class="birth">
                 <div class="birth-text">Ngày sinh</div>
-                <input type="date" class="birth-input" />
+                <input type="date" id="txtDateOfBirth" class="birth-input" />
 
             </div>
             <div class="manage-name">

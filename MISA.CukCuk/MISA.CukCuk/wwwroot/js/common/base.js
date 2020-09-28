@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-        baseJS = new BaseJS();
+    baseJS = new BaseJS();
 })
 
 class BaseJS {
@@ -10,13 +10,9 @@ class BaseJS {
             this.getData();
             this.loadData();
             this.initEvent();
-            var Getbutton;
-            var objCustomer;
         } catch (e) {
             console.log('error');
         }
-       
-
     }
 
     getData() {
@@ -25,19 +21,32 @@ class BaseJS {
     /**
      * Hàm load dữ liệu khách hảng
      * Author: TDNAM (21/09/2020)
+     * Edit: TDNAM (28/09/2020) Sửa cách đọc dữ liệu theo hướng đói tượng
      * */
     loadData() {
         try {
+            // Đọc thông tin các cột dữ liệu
+            var fields = $('table#tbCustomer thead th');
+           
+            console.log(fields);
             // Lấy dữ liệu: 
             var data = this.Data;
             var self = this;
             // Đọc dữ liệu:
-            //$('.grid table tbody').empty();
+            $('.grid table tbody').empty();
             $.each(data, function (index, obj) {
+                var tr = $(`<tr></tr>`)
+                $.each(fields, function (index, field) {
+                    debugger;
+                    var fieldName = $(field).attr('fieldName');
+                    var value = obj[fieldName];
+                    var td = $(`<td>` + value + `</td>`);
+                    $(tr).append(td);
+                })
                 // Binding dữ liệu lên UI:
                 //debugger
-                var trHTML = self.makeTrHTML(obj);
-                $('.grid table tbody').append(trHTML);
+                //var trHTML = self.makeTrHTML(obj);
+                $('.grid table tbody').append(tr);
             })
         } catch (e) {
             console.log('error');
@@ -79,78 +88,19 @@ class BaseJS {
         this.Getbutton = 1;
         this.showDialogDetail();
     }
+    /**
+     * Hàm sự kiện click vào button Hủy
+     * Author: TDNAM (21/09/2020)
+     * */
     btnCancleOnClick() {
         this.hideDialogDetail();
     }
+    /**
+     * Hàm sự kiện click vào button Cất
+     * Author: TDNAM (22/09/2020)
+     * */
     btnSaveOnClick() {
-
-        //validate dữ liệu trên form( Kiểm tra dữ liệu nhập trên form có dúng hay không)
-
-        var inputRequired = $("[required]");
-        var isValid = true;
-        var isDuplicate = true;
-        /*
-         * Kiểm tra mã khách hàng có trùng không trước khi thêm vào
-         * Author: TDNAM (22/09/2020)
-         * */
-        var cusId = $("#txtCustomerId").val();
-        $.each(customers, function (index, item) {
-            if (item.CustomerId == cusId) {
-                isDuplicate = false;
-            }
-        })
-        /*
-         * Kiểm tra các trường bắt buộc không được rỗng
-         * Author: TDNAM (21/09/2020)
-         * */
-        $.each(inputRequired, function (index, input) {
-            var valid = $(input).trigger("blur");
-            if (isValid && valid.hasClass("required-error")) {
-                isValid = false;
-            }
-        })
-
-        //Thu thập dữ liệu trên form dialog
-        if (isValid) {
-            if (this.Getbutton == 1) {
-                if (isDuplicate) {
-                    var customer = {};
-                    customer.CustomerId = $("#txtCustomerId").val();
-                    customer.CustomerName = $("#txtCustomerName").val();
-                    customer.ManageName = $("#txtManageName").val();
-                    customer.TaxId = $("#txtTaxId").val();
-                    customer.Address = $("#txtAddress").val();
-                    customer.Phone = $("#txtPhoneNumber").val();
-                    customer.Email = $("#txtEmail").val();
-                    //Lưu trữ thông tin trên form vào database
-                    customers.push(customer);
-                    //load lại form
-
-                    this.loadData();
-                    this.Refresh();
-                    this.hideDialogDetail();
-                } else {
-                    alert('Mã khách hàng đã trùng lặp, vui lòng nhập lại!');
-                    $('#txtCustomerId').val('');
-                    $('#txtCustomerId').focus();
-                }
-            }
-            else if (this.Getbutton == 2) {
-                var index = $("#txtCustomerId").val();
-                var objIndex = customers.findIndex((obj => obj.CustomerId == index));
-                customers[objIndex].CustomerName = $("#txtCustomerName").val();
-                customers[objIndex].ManageName = $("#txtManageName").val();
-                customers[objIndex].TaxId = $("#txtTaxId").val();
-                customers[objIndex].Address = $("#txtAddress").val();
-                customers[objIndex].Phone = $("#txtPhoneNumber").val();
-                customers[objIndex].Email = $("#txtEmail").val();
-                this.loadData();
-                this.Refresh();
-                this.hideDialogDetail();
-            }
-        }
-
-
+        debugger;
     }
 
     /**
@@ -218,67 +168,27 @@ class BaseJS {
      * */
 
     rowClickTable() {
-        $(this).siblings().removeClass('row-selected');
-        $(this).addClass('row-selected');
-        var customerEdit = {};
-        customerEdit.CustomerId = $(this).closest('tr').find('td:nth-child(1)').text();
-        customerEdit.CustomerName = $(this).closest('tr').find('td:nth-child(2)').text();
-        customerEdit.ManageName = $(this).closest('tr').find('td:nth-child(3)').text();
-        customerEdit.TaxId = $(this).closest('tr').find('td:nth-child(4)').text();
-        customerEdit.Address = $(this).closest('tr').find('td:nth-child(5)').text();
-        customerEdit.Phone = $(this).closest('tr').find('td:nth-child(6)').text();
-        customerEdit.Email = $(this).closest('tr').find('td:nth-child(7)').text();
-        return customerEdit;
+        debugger;
+        this.classList.add("row-selected");
+        $(this).siblings().removeClass("row-selected");
     }
-
-
-    //objCustomer = this.rowClickTable;
-    //btnEditOnClick() {
-    //    this.Getbutton = 2;
-    //    this.showDialogDetail();
-
-    //    $("#tbCustomer tbody tr").on("click", function () {
-    //        var customerEdit = {};
-    //        customerEdit.CustomerId = $(this).closest('tr').find('td:nth-child(1)').text();
-    //        customerEdit.CustomerName = $(this).closest('tr').find('td:nth-child(2)').text();
-    //        customerEdit.ManageName = $(this).closest('tr').find('td:nth-child(3)').text();
-    //        customerEdit.TaxId = $(this).closest('tr').find('td:nth-child(4)').text();
-    //        customerEdit.Address = $(this).closest('tr').find('td:nth-child(5)').text();
-    //        customerEdit.Phone = $(this).closest('tr').find('td:nth-child(6)').text();
-    //        customerEdit.Email = $(this).closest('tr').find('td:nth-child(7)').text();
-    //            /*e.preventDefault();*/ //==> preventDefault() không load lại form nếu làm việc với form
-    //            $("#txtCustomerId").val(customerEdit.CustomerId);
-    //            $("#txtCustomerName").val(customerEdit.CustomerName);
-    //            $("#txtManageName").val(customerEdit.ManageName);
-    //            $("#txtTaxId").val(customerEdit.TaxId);
-    //            $("#txtAddress").val(customerEdit.Address);
-    //            $("#txtPhoneNumber").val(customerEdit.Phone);
-    //            $("#txtEmail").val(customerEdit.Email);
-    //    });
-    //}
-
+    /**
+     * Viết hàm click vao button Sua
+     * Author: TDNAM (22/09/2020)
+     * Edit: TDNAM  (28/09/2020)
+     * TODO: Cần sửa lại
+     * 
+     * */
     btnEditOnClick() {
-        this.Getbutton = 2;
-        this.showDialogDetail();
-        $("#txtCustomerId").val(this.objCustomer.CustomerId);
-        $("#txtCustomerName").val(this.objCustomer.CustomerName);
-        $("#txtManageName").val(this.objCustomer.ManageName);
-        $("#txtTaxId").val(this.objCustomer.TaxId);
-        $("#txtAddress").val(this.objCustomer.Address);
-        $("#txtPhoneNumber").val(this.objCustomer.Phone);
-        $("#txtEmail").val(this.objCustomer.Email);
+        
     }
-
+    /**
+     * Viết hàm click vao button Xoa
+     * Author: TDNAM (22/09/2020)
+     * TODO: Cần sửa lại
+     * */
     btnDeleteOnClick() {
-        //$('#tbCustomer tbody tr').click(function (e) {
-        //    var cusId = $(this).closest('tr').find('td:nth-child(1)').text();
-        //    $.each(customers, function (index, item) {
-        //        if (item.CustomerId == cusId) {
-        //            delete this.customers[item]; // thì xóa
-        //        }
-        //    })
-
-        //})
+        
     }
 }
 
