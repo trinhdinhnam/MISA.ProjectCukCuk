@@ -26,7 +26,7 @@ class BaseJS {
     loadData() {
         try {
             // Đọc thông tin các cột dữ liệu
-            var fields = $('table#tbCustomer thead th');
+            var fields = $('table thead th');
            
             console.log(fields);
             // Lấy dữ liệu: 
@@ -40,7 +40,18 @@ class BaseJS {
                     debugger;
                     var fieldName = $(field).attr('fieldName');
                     var value = obj[fieldName];
-                    var td = $(`<td>` + value + `</td>`);
+                    var td;
+                    if (fieldName == 'DateOfBirth') {
+                        td = $(`<td>` + commonJS.formatDate(value) + `</td>`);
+                    }
+                    else if (fieldName == 'Salary') {
+                        td = $(`<td>` + commonJS.formatMoney(value) + `</td>`);
+
+                    }
+                    else {
+
+                        td = $(`<td>` + value + `</td>`);
+                    }
                     $(tr).append(td);
                 })
                 // Binding dữ liệu lên UI:
@@ -51,7 +62,6 @@ class BaseJS {
         } catch (e) {
             console.log('error');
         }
-
     }
     /**
      * Build HTML cho tr:
@@ -60,6 +70,22 @@ class BaseJS {
     makeTrHTML(obj) {
 
     }
+
+    /**
+     * Hàm kiểm tra tính duy nhất của index 
+     * Author: TDNAM (29/09/2020)
+     * */
+    //checkUnique(id) {
+    //    //lấy dữ liệu để duyệt
+    //    var data = this.Data;
+    //    $.each(data, function (index, item) {
+    //        if (item. == id) {
+    //            return false;
+    //        }
+    //        return true;
+    //    })
+
+    //}
     /**
      * Hàm khởi tạo các sự kiện
      * Author: TDNAM (20/09/2020)
@@ -74,7 +100,7 @@ class BaseJS {
         $('.toolbar-btn-edit').click(this.btnEditOnClick.bind(this));
         $('.toolbar-btn-del').click(this.btnDeleteOnClick.bind(this));
         //$('#tbCustomer tbody tr').click(this.rowClickTable);
-        $("table#tbCustomer").on("click", "tr", this.rowClickTable);
+        $("table tbody").on("click", "tr", this.rowClickTable);
         $('#toolbar-btn-load').click(this.btnReloadOnClick.bind(this));
 
 
@@ -98,6 +124,7 @@ class BaseJS {
     /**
      * Hàm sự kiện click vào button Cất
      * Author: TDNAM (22/09/2020)
+     * Edit: TDNAM (29/09/2020)
      * */
     btnSaveOnClick() {
         debugger;
@@ -169,8 +196,8 @@ class BaseJS {
 
     rowClickTable() {
         debugger;
-        this.classList.add("row-selected");
         $(this).siblings().removeClass("row-selected");
+        $(this).addClass("row-selected");
     }
     /**
      * Viết hàm click vao button Sua

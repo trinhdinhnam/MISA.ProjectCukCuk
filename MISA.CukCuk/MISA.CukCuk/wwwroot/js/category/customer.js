@@ -48,7 +48,7 @@ class Customer extends BaseJS{
             $("#txtAddress").val(cusEdit.Address);
             $("#txtPhoneNumber").val(cusEdit.Phone);
             $("#txtEmail").val(cusEdit.Email);
-            $("#txtDateOfBirth").val(cusEdit.DateOfBirth);
+            $("#txtDateOfBirth").val(cusEdit.DateOfBirth.toISOString().substring(0, 10));
 
             //chỉnh sửa thông tin trên form
         } else {
@@ -112,6 +112,8 @@ class Customer extends BaseJS{
                 }
             }
             else if (this.Getbutton == 2) {
+                debugger;
+
                 var index = $("#txtCustomerId").val();
                 var objIndex = data.findIndex((obj => obj.CustomerId == index));
                 data[objIndex].CustomerName = $("#txtCustomerName").val();
@@ -120,6 +122,8 @@ class Customer extends BaseJS{
                 data[objIndex].Address = $("#txtAddress").val();
                 data[objIndex].Phone = $("#txtPhoneNumber").val();
                 data[objIndex].Email = $("#txtEmail").val();
+                data[objIndex].DateOfBirth = new Date($("#txtDateOfBirth").val());
+
                 this.loadData();
                 this.Refresh();
                 this.hideDialogDetail();
@@ -170,7 +174,7 @@ var data = [
         Address: "Thường Tín, Hà Nội",
         Phone: "0324004935",
         Email: "sang2378@gmail.com",
-        DateOfBirth: new Date('1998-11-18'),
+        DateOfBirth: new Date('1999-04-17'),
     },
     {
         CustomerId: "KH838284",
