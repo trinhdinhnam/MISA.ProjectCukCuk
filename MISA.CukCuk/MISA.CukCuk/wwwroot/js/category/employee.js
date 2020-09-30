@@ -121,7 +121,7 @@ class EmployeeJS extends BaseJS {
         }
     }
     /**
-     * Viết hàm click vao button Xoa Employee
+     * Viết hàm click vao button Xóa Employee
      * Author: TDNAM (29/09/2020)
      * 
      * */

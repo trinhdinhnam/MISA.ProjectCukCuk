@@ -65,6 +65,7 @@ class Customer extends BaseJS{
         var isValid = true;
         var isDuplicate = true;
         var self = this;
+        var isCheckEmail = this.checkEmail();
         /*
          * Kiểm tra mã khách hàng có trùng không trước khi thêm vào
          * Author: TDNAM (22/09/2020)
@@ -87,7 +88,7 @@ class Customer extends BaseJS{
         })
 
         //Thu thập dữ liệu trên form dialog
-        if (isValid) {
+        if (isValid && isCheckEmail) {
             if (this.Getbutton == 1) {
                 if (isDuplicate) {
                     var customer = {};

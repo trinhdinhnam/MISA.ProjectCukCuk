@@ -10,6 +10,8 @@ class BaseJS {
             this.getData();
             this.loadData();
             this.initEvent();
+            this.validateByTrim(x);
+            this.checkEmail();
         } catch (e) {
             console.log('error');
         }
@@ -27,7 +29,7 @@ class BaseJS {
         try {
             // Đọc thông tin các cột dữ liệu
             var fields = $('table thead th');
-           
+
             console.log(fields);
             // Lấy dữ liệu: 
             var data = this.Data;
@@ -66,6 +68,7 @@ class BaseJS {
     /**
      * Build HTML cho tr:
      * Author: TDNAM (27/09/2020)
+     * @param {object} đối tượng
      * */
     makeTrHTML(obj) {
 
@@ -127,6 +130,7 @@ class BaseJS {
      * Edit: TDNAM (29/09/2020)
      * */
     btnSaveOnClick() {
+       
         debugger;
     }
 
@@ -207,7 +211,7 @@ class BaseJS {
      * 
      * */
     btnEditOnClick() {
-        
+
     }
     /**
      * Viết hàm click vao button Xoa
@@ -215,7 +219,32 @@ class BaseJS {
      * TODO: Cần sửa lại
      * */
     btnDeleteOnClick() {
-        
+
+    }
+    /**
+     * Xử lý cắt khoảng trắng ở 2 đầu chuỗi nhập vào
+     * Author: TDNAM (30/09/2020)
+     * @param {string} x
+     */
+    validateByTrim(x) {
+        return x.replace(/^\s+|\s+$/gm, '');
+    }
+
+    /**
+     * Hàm kiểm tra giá trị Email nhập vào
+     * Author: TDNAM (30/09/2020)
+     * */
+    checkEmail() {
+        var email = $('#txtEmail').val();
+        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!filter.test(email)) {
+            alert('Bạn phải nhập đúng địa chỉ email hợp lệ.\nExample@gmail.com');
+            email.focus;
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }
 
