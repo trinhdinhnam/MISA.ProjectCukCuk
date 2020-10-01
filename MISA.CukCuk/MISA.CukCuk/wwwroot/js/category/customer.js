@@ -15,6 +15,39 @@ class Customer extends BaseJS{
      *  Hàm lấy data của Customer
      * Author: TDNAM (27/09/2020)
      * */
+    /**
+     *  Hàm InitEvent kế thừa lớp BaseJS
+     * Author: TDNAM (30/09/2020)
+     * */
+
+    initEvent() {
+        super.initEvent();
+        $('#txtCustomerId').blur(this.validateRequired);
+        $('#txtCustomerName').blur(this.validateRequired);
+        $('#txtPhoneNumber').blur(this.validateRequired);
+
+    }
+
+    /**
+     * Hàm Validate bắt buộc nhập
+     * Author: TDNAM (30/09/2020)
+     * */
+    validateRequired() {
+        //Lấy dữ liệu đã nhập: 
+        var value = $(this).val();
+        // Thực hiện xem dữ liệu có nhập hay không (khoảng trắng hoặc null..)
+        if (!value || !(value && value.trim())) {
+            $(this).addClass('not-required');
+            $(this).attr('title', 'Trường hợp này không được phép để trống');
+        }
+        else {
+            $(this).removeClass('not-required');
+            $(this).removeAttr('title');
+
+
+        }
+        //Nếu chưa nhập thì set border màu đỏ và hiển thị thông báo
+    }
     getData() {
         this.Data = data;
     }
@@ -61,7 +94,7 @@ class Customer extends BaseJS{
     * */
     btnSaveOnClick() {
         //validate dữ liệu trên form( Kiểm tra dữ liệu nhập trên form có dúng hay không)
-        var inputRequired = $("[required]");
+        //var inputRequired = $("[required]");
         var isValid = true;
         var isDuplicate = true;
         var self = this;
@@ -76,32 +109,21 @@ class Customer extends BaseJS{
                 isDuplicate = false;
             }
         })
-        /*
-         * Kiểm tra các trường bắt buộc không được rỗng
-         * Author: TDNAM (21/09/2020)
-         * */
-        $.each(inputRequired, function (index, input) {
-            var valid = $(input).trigger("blur");
-            if (isValid && valid.hasClass("required-error")) {
-                isValid = false;
-            }
-        })
+        
 
         //Thu thập dữ liệu trên form dialog
-        if (isValid && isCheckEmail) {
+        if (isCheckEmail) {
             if (this.Getbutton == 1) {
                 if (isDuplicate) {
-                    var customer = {};
-                    customer.CustomerId = $("#txtCustomerId").val();
-                    customer.CustomerName = $("#txtCustomerName").val();
-                    customer.ManageName = $("#txtManageName").val();
-                    customer.TaxId = $("#txtTaxId").val();
-                    customer.Address = $("#txtAddress").val();
-                    customer.Phone = $("#txtPhoneNumber").val();
-                    customer.Email = $("#txtEmail").val();
-                    customer.DateOfBirth = new Date($("#txtDateOfBirth").val());
+                    var fields = $('input[fieldName]');
+                    var dataForm = {};
+                    $.each(fields, function (index, field) {
+                        var fieldName = $(field).attr('fieldName');
+                        var value = $(field).val();
+                        dataForm[fieldName] = value;
+                    })
                     //Lưu trữ thông tin trên form vào database
-                    data.push(customer);
+                    data.push(dataForm);
                     //load lại form
                     this.loadData();
                     this.Refresh();

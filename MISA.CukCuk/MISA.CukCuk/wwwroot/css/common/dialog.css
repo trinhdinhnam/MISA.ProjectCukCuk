@@ -277,11 +277,6 @@
         background-image: url('../../content/images/Disable16.png');
     }
 
-.dialog-content input{
-    border: 1px solid #c6c2c2;
-    height: 18px;
-}
 
-.required-error, .required-error:focus {
-    border: 1px solid #ff0000;
-}
+
+
