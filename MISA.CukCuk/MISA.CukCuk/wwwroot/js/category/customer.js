@@ -6,7 +6,7 @@
  * Author: TDNAM (27/09/2020)
  * */
 
-class Customer extends BaseJS{
+class Customer extends BaseJS {
     constructor(name) {
         var Getbutton;
         super();
@@ -22,32 +22,19 @@ class Customer extends BaseJS{
 
     initEvent() {
         super.initEvent();
-        $('#txtCustomerId').blur(this.validateRequired);
-        $('#txtCustomerName').blur(this.validateRequired);
-        $('#txtPhoneNumber').blur(this.validateRequired);
-
+        $('input[required]').blur(this.validateRequired.bind(this));
     }
 
     /**
      * Hàm Validate bắt buộc nhập
      * Author: TDNAM (30/09/2020)
      * */
-    validateRequired() {
-        //Lấy dữ liệu đã nhập: 
-        var value = $(this).val();
-        // Thực hiện xem dữ liệu có nhập hay không (khoảng trắng hoặc null..)
-        if (!value || !(value && value.trim())) {
-            $(this).addClass('not-required');
-            $(this).attr('title', 'Trường hợp này không được phép để trống');
-        }
-        else {
-            $(this).removeClass('not-required');
-            $(this).removeAttr('title');
-
-
-        }
+    validateRequired(sender) {
         //Nếu chưa nhập thì set border màu đỏ và hiển thị thông báo
+        validData.validateRequired(sender.currentTarget);
     }
+
+
     getData() {
         this.Data = data;
     }
@@ -74,6 +61,7 @@ class Customer extends BaseJS{
                 }
             })
             // binding các thông tin của khách hàng lên form
+
             $("#txtCustomerId").val(cusEdit.CustomerId);
             $("#txtCustomerName").val(cusEdit.CustomerName);
             $("#txtManageName").val(cusEdit.ManageName);
@@ -88,71 +76,7 @@ class Customer extends BaseJS{
             alert('Bạn chưa chọn khách hàng nào, Vui lòng chọn để sửa');
         }
     }
-    /**
-    * Hàm lưu dữ liệu của Customer
-    * Author: TDNAM (22/09/2020)
-    * */
-    btnSaveOnClick() {
-        //validate dữ liệu trên form( Kiểm tra dữ liệu nhập trên form có dúng hay không)
-        //var inputRequired = $("[required]");
-        var isValid = true;
-        var isDuplicate = true;
-        var self = this;
-        var isCheckEmail = this.checkEmail();
-        /*
-         * Kiểm tra mã khách hàng có trùng không trước khi thêm vào
-         * Author: TDNAM (22/09/2020)
-         * */
-        var cusId = $("#txtCustomerId").val();
-        $.each(data, function (index, item) {
-            if (item.CustomerId == cusId) {
-                isDuplicate = false;
-            }
-        })
-        
-
-        //Thu thập dữ liệu trên form dialog
-        if (isCheckEmail) {
-            if (this.Getbutton == 1) {
-                if (isDuplicate) {
-                    var fields = $('input[fieldName]');
-                    var dataForm = {};
-                    $.each(fields, function (index, field) {
-                        var fieldName = $(field).attr('fieldName');
-                        var value = $(field).val();
-                        dataForm[fieldName] = value;
-                    })
-                    //Lưu trữ thông tin trên form vào database
-                    data.push(dataForm);
-                    //load lại form
-                    this.loadData();
-                    this.Refresh();
-                    this.hideDialogDetail();
-                } else {
-                    alert('Mã khách hàng đã trùng lặp, vui lòng nhập lại!');
-                    $('#txtCustomerId').val('');
-                    $('#txtCustomerId').focus();
-                }
-            }
-            else if (this.Getbutton == 2) {
-                debugger;
-
-                var index = $("#txtCustomerId").val();
-                var objIndex = data.findIndex((obj => obj.CustomerId == index));
-                data[objIndex].CustomerName = $("#txtCustomerName").val();
-                data[objIndex].ManageName = $("#txtManageName").val();
-                data[objIndex].TaxId = $("#txtTaxId").val();
-                data[objIndex].Address = $("#txtAddress").val();
-                data[objIndex].Phone = $("#txtPhoneNumber").val();
-                data[objIndex].Email = $("#txtEmail").val();
-                data[objIndex].DateOfBirth = new Date($("#txtDateOfBirth").val());
-
-                this.loadData();
-                this.Refresh();
-                this.hideDialogDetail();
-            }
-        }
-    }
+    
     /**
      * Viết hàm click vao button Xoa Customer
      * Author: TDNAM (28/09/2020)
@@ -175,7 +99,7 @@ class Customer extends BaseJS{
             })
 
             //Xóa thông tin Customer đã chọn
-            for (var i = 0; i < data.length ; i++) {
+            for (var i = 0; i < data.length; i++) {
                 if (data[i] === cusDelete) {
                     data.splice(i, 1);
                     this.loadData();
@@ -185,6 +109,7 @@ class Customer extends BaseJS{
             alert('Bạn chưa chọn khách hàng nào, Vui lòng chọn để xóa');
         }
     }
+    
 }
 
 

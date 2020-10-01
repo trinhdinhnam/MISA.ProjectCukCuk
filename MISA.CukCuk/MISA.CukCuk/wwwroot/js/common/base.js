@@ -1,7 +1,5 @@
 ﻿$(document).ready(function () {
-    baseJS = new BaseJS();
 })
-
 class BaseJS {
 
     constructor(name) {
@@ -10,8 +8,6 @@ class BaseJS {
             this.getData();
             this.loadData();
             this.initEvent();
-            this.validateByTrim(x);
-            this.checkEmail();
         } catch (e) {
             console.log('error');
         }
@@ -43,17 +39,16 @@ class BaseJS {
                     var fieldName = $(field).attr('fieldName');
                     var value = obj[fieldName];
                     var td;
-                    if (fieldName == 'DateOfBirth') {
-                        td = $(`<td>` + commonJS.formatDate(value) + `</td>`);
-                    }
-                    else if (fieldName == 'Salary') {
-                        td = $(`<td>` + commonJS.formatMoney(value) + `</td>`);
+                    //if (fieldName == 'DateOfBirth') {
+                    //    td = $(`<td>` + commonJS.formatDate(value) + `</td>`);
+                    //}
+                    //else if (fieldName == 'Salary') {
+                    //    td = $(`<td>` + commonJS.formatMoney(value) + `</td>`);
+                    //}
+                    //else {
 
-                    }
-                    else {
-
-                        td = $(`<td>` + value + `</td>`);
-                    }
+                    td = $(`<td>` + value + `</td>`);
+                    //}
                     $(tr).append(td);
                 })
                 // Binding dữ liệu lên UI:
@@ -74,21 +69,7 @@ class BaseJS {
 
     }
 
-    /**
-     * Hàm kiểm tra tính duy nhất của index 
-     * Author: TDNAM (29/09/2020)
-     * */
-    //checkUnique(id) {
-    //    //lấy dữ liệu để duyệt
-    //    var data = this.Data;
-    //    $.each(data, function (index, item) {
-    //        if (item. == id) {
-    //            return false;
-    //        }
-    //        return true;
-    //    })
 
-    //}
     /**
      * Hàm khởi tạo các sự kiện
      * Author: TDNAM (20/09/2020)
@@ -129,9 +110,70 @@ class BaseJS {
      * Author: TDNAM (22/09/2020)
      * Edit: TDNAM (29/09/2020)
      * */
+
     btnSaveOnClick() {
-       
-        debugger;
+        //validate dữ liệu trên form( Kiểm tra dữ liệu nhập trên form có dúng hay không)
+        //1. Kiểm tra các trường bắt buôc nhập trên form dialog
+        var isValid = true;
+
+        //2. Kiểm tra index có trùng với index có trong database không
+        var isDuplicate = true;
+        var inputId = $('txtCustomerId').val();
+        var fieldName = $(inputId).attr('fieldName');
+
+        $.each(data, function (index, item) {
+            if (item.fieldName == inputId) {
+                isDuplicate = false;
+            }
+        })
+
+        //3. Kiểm tra tính chính xác của email nhập vào
+        var inputEmail = $('#txtEmail');
+        var isCheckEmail = validData.validateEmail(inputEmail);
+        var self = this;
+        var inputRequired = $('input[required]');
+        //1. Kiểm tra bắt buộc nhập:
+        $.each(inputRequired, function (index, input) {
+            if (!validData.validateRequired(input)) {
+                isValid = false;
+            }
+        })
+
+
+
+        if (isValid) {
+            debugger
+            if (isCheckEmail) {
+                if (isDuplicate) {
+                    debugger
+                    //Build Object cần lưu:
+                    var inputs = $('input[fieldName]');
+                    var customer = {};
+                    $.each(inputs, function (index, input) {
+                        var fieldName = $(input).attr('fieldName');
+                        var value = $(input).val();
+                        customer[fieldName] = value;
+                    })
+                    debugger
+                    //Gọi service thực hiện lưu dữ liệu:
+                    data.push(customer);
+                    //Xử lý sau khi lưu dữ liệu:
+                    self.getData();
+                    self.loadData();
+                    self.Refresh();
+                    self.hideDialogDetail();
+                } else {
+                    alert('Mã của bản nhập vào đã bị trùng!');
+
+                }
+                } else {
+                    alert('Bạn phải nhập đúng địa chỉ email hợp lệ.\nExample@gmail.com');
+                }
+        }
+        else {
+            alert('Bạn hãy kiểm tra lại các trường bắt buộc phải được nhập!');
+        }
+
     }
 
     /**
@@ -141,24 +183,7 @@ class BaseJS {
     btnReloadOnClick() {
         this.loadData();
     }
-    /**
-     * Hàm kiểm tra validate dữ liệu
-     * Author: TDNAM (22/09/2020)
-     * */
-
-    //#endregion "Các sự kiện button";
-    checkRequired() {
-        var value = this.value;
-
-        if (!value) {
-            $(this).addClass("required-error");
-            $(this).attr("title", "Bạn phải nhập thông tin này!");
-        } else {
-            $(this).removeClass("required-error");
-            $(this).removeAttr("title");
-        }
-
-    }
+   
     /**
      * Hiển thị dialog chi tiết
      * Author: TDNAM (21/09/2020)
@@ -221,31 +246,7 @@ class BaseJS {
     btnDeleteOnClick() {
 
     }
-    /**
-     * Xử lý cắt khoảng trắng ở 2 đầu chuỗi nhập vào
-     * Author: TDNAM (30/09/2020)
-     * @param {string} x
-     */
-    validateByTrim(x) {
-        return x.replace(/^\s+|\s+$/gm, '');
-    }
-
-    /**
-     * Hàm kiểm tra giá trị Email nhập vào
-     * Author: TDNAM (30/09/2020)
-     * */
-    checkEmail() {
-        var email = $('#txtEmail').val();
-        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        if (!filter.test(email)) {
-            alert('Bạn phải nhập đúng địa chỉ email hợp lệ.\nExample@gmail.com');
-            email.focus;
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
+    
 }
 
 
