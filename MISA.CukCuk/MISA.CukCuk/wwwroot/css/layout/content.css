@@ -138,8 +138,9 @@
 .content-body {
     position: relative;
     padding: 5px;
+    padding-bottom: 0;
     padding-left: 10px;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 50px);
 }
 
     .content-body .page-title {

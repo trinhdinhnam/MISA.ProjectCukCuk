@@ -5,6 +5,7 @@ class BaseJS {
     constructor(name) {
         debugger;
         try {
+            var formMode;
             this.getData();
             this.loadData();
             this.initEvent();
@@ -37,24 +38,31 @@ class BaseJS {
                 $.each(fields, function (index, field) {
                     debugger;
                     var fieldName = $(field).attr('fieldName');
-                    var value = obj[fieldName];
                     var td;
-                    //if (fieldName == 'DateOfBirth') {
-                    //    td = $(`<td>` + commonJS.formatDate(value) + `</td>`);
-                    //}
-                    //else if (fieldName == 'Salary') {
-                    //    td = $(`<td>` + commonJS.formatMoney(value) + `</td>`);
-                    //}
-                    //else {
+                    var value = null;
+                    switch (fieldName) {
+                        case 'DateOfBirth':
+                            value = commonJS.formatDate(obj[fieldName]);
 
+                            break;
+                        case 'Salary':
+                            value = commonJS.formatMoney(obj[fieldName]);
+                            break;
+                        default:
+                            value = obj[fieldName];
+
+                            break;
+                    }
                     td = $(`<td>` + value + `</td>`);
-                    //}
+
                     $(tr).append(td);
                 })
                 // Binding dữ liệu lên UI:
                 //debugger
                 //var trHTML = self.makeTrHTML(obj);
                 $('.grid table tbody').append(tr);
+                $(this).siblings().removeClass("row-selected");
+
             })
         } catch (e) {
             console.log('error');
@@ -83,7 +91,6 @@ class BaseJS {
         $('input[required]').blur(this.checkRequired);
         $('.toolbar-btn-edit').click(this.btnEditOnClick.bind(this));
         $('.toolbar-btn-del').click(this.btnDeleteOnClick.bind(this));
-        //$('#tbCustomer tbody tr').click(this.rowClickTable);
         $("table tbody").on("click", "tr", this.rowClickTable);
         $('#toolbar-btn-load').click(this.btnReloadOnClick.bind(this));
 
@@ -95,9 +102,53 @@ class BaseJS {
      * Author: TDNAM (21/09/2020)
      * */
     btnAddOnClick() {
-        this.Getbutton = 1;
+        this.formMode = 1;
         this.showDialogDetail();
     }
+
+    /**
+    * Hàm click Edit Customer
+    * Author: TDNAM (28/09/2020)
+    * Edit: TDNAM (02/10/2020)
+    * */
+    btnEditOnClick() {
+        debugger;
+        this.formMode = 2;
+        var self = this;
+        var objEdit = {};
+        //Lấy dữ liệu của row tương ứng đã chọn
+        //1. Xác định đối tượng nào đã được chọn nào dã được chọn
+        var trSelected = $("table tr.row-selected");
+        //2. Lấy thông tin theo mã đối tượng
+        if (trSelected.length > 0) {
+            //Hiển thị form chi tiết:
+            self.showDialogDetail();
+            var inputId = $('.indexObj');
+            var objectId = $(trSelected).children()[0].textContent
+            var fieldNameId = $(inputId).attr('fieldName');
+
+            $.each(data, function (index, item) {
+                if (item[fieldNameId] == objectId) {
+                    objEdit = item;
+                }
+            })
+            // binding các thông tin của khách hàng lên form
+            var inputs = $('input[fieldName]');
+            $.each(inputs, function (index, input) {
+                var fieldName = $(input).attr('fieldName');
+                if (fieldName == 'DateOfBirth') {
+                    $(input).val(objEdit[fieldName].toISOString().substring(0, 10));
+
+                } else {
+                    $(input).val(objEdit[fieldName]);
+
+                }
+            })
+        } else {
+            alert('Bạn chưa chọn khách hàng nào, Vui lòng chọn để sửa');
+        }
+    }
+
     /**
      * Hàm sự kiện click vào button Hủy
      * Author: TDNAM (21/09/2020)
@@ -115,14 +166,17 @@ class BaseJS {
         //validate dữ liệu trên form( Kiểm tra dữ liệu nhập trên form có dúng hay không)
         //1. Kiểm tra các trường bắt buôc nhập trên form dialog
         var isValid = true;
-
+        $.each(inputRequired, function (index, input) {
+            if (!validData.validateRequired(input)) {
+                isValid = false;
+            }
+        })
         //2. Kiểm tra index có trùng với index có trong database không
         var isDuplicate = true;
-        var inputId = $('txtCustomerId').val();
-        var fieldName = $(inputId).attr('fieldName');
-
+        var inputId = $('.indexObj');
+        var fieldNameId = $(inputId).attr('fieldName');
         $.each(data, function (index, item) {
-            if (item.fieldName == inputId) {
+            if (item[fieldNameId] == inputId.val()) {
                 isDuplicate = false;
             }
         })
@@ -132,43 +186,68 @@ class BaseJS {
         var isCheckEmail = validData.validateEmail(inputEmail);
         var self = this;
         var inputRequired = $('input[required]');
-        //1. Kiểm tra bắt buộc nhập:
-        $.each(inputRequired, function (index, input) {
-            if (!validData.validateRequired(input)) {
-                isValid = false;
-            }
-        })
+
 
 
 
         if (isValid) {
             debugger
             if (isCheckEmail) {
-                if (isDuplicate) {
-                    debugger
-                    //Build Object cần lưu:
+                if (this.formMode == 1) {
+                    //Khi gia trij formMode la 1 thì nút cất là Thêm
+                    if (isDuplicate) {
+                        debugger
+                        //Build Object cần lưu:
+                        var inputs = $('input[fieldName]');
+                        var objAdd = {};
+                        $.each(inputs, function (index, input) {
+                            var fieldName = $(input).attr('fieldName');
+                            var value = $(input).val();
+                            if (fieldName == 'DateOfBirth') {
+                                objAdd[fieldName] = new Date(value);
+                            }
+                            else {
+                                objAdd[fieldName] = value;
+                            }
+                        })
+                        debugger
+                        //Gọi service thực hiện lưu dữ liệu:
+                        data.push(objAdd);
+                        //Xử lý sau khi lưu dữ liệu:
+                        self.getData();
+                        self.loadData();
+                        self.Refresh();
+                        self.hideDialogDetail();
+                    } else {
+                        alert('Mã của bản nhập vào đã bị trùng!');
+
+                    }
+                }
+                else if (this.formMode == 2) {
+                    var inputId = $('.indexObj');
+                    var fieldNameId = $(inputId).attr('fieldName');
                     var inputs = $('input[fieldName]');
-                    var customer = {};
+
+                    var objIndex = data.findIndex((obj => obj[fieldNameId] == inputId.val()));
                     $.each(inputs, function (index, input) {
                         var fieldName = $(input).attr('fieldName');
                         var value = $(input).val();
-                        customer[fieldName] = value;
+                        if (fieldName == 'DateOfBirth') {
+                            data[objIndex][fieldName] = new Date(value);
+                        }
+                        else {
+                            data[objIndex][fieldName] = value;
+                        }
                     })
-                    debugger
-                    //Gọi service thực hiện lưu dữ liệu:
-                    data.push(customer);
-                    //Xử lý sau khi lưu dữ liệu:
                     self.getData();
                     self.loadData();
                     self.Refresh();
                     self.hideDialogDetail();
-                } else {
-                    alert('Mã của bản nhập vào đã bị trùng!');
+                }
 
-                }
-                } else {
-                    alert('Bạn phải nhập đúng địa chỉ email hợp lệ.\nExample@gmail.com');
-                }
+            } else {
+                alert('Bạn phải nhập đúng địa chỉ email hợp lệ.\nExample@gmail.com');
+            }
         }
         else {
             alert('Bạn hãy kiểm tra lại các trường bắt buộc phải được nhập!');
@@ -183,7 +262,7 @@ class BaseJS {
     btnReloadOnClick() {
         this.loadData();
     }
-   
+
     /**
      * Hiển thị dialog chi tiết
      * Author: TDNAM (21/09/2020)
@@ -206,16 +285,14 @@ class BaseJS {
     /**
      * Refresh lại form dialog sau khi thêm, sửa thành công
      * Author: TDNAM (21/09/2020)
+     * Edit: TDNAM (02/10/2020) Sửa thành hàm dùng chung
      * */
 
     Refresh() {
-        $("#txtCustomerId").val('');
-        $("#txtCustomerName").val('');
-        $("#txtManageName").val('');
-        $("#txtTaxId").val('');
-        $("#txtAddress").val('');
-        $("#txtPhoneNumber").val('');
-        $("#txtEmail").val('');
+        var inputs = $('input[fieldName]');
+        $.each(inputs, function (index, input) {
+            $('input[fieldName]').val('');
+        })
     }
     /**
      * Viết hàm lấy đối tượng khi click vào bảng
@@ -228,25 +305,43 @@ class BaseJS {
         $(this).siblings().removeClass("row-selected");
         $(this).addClass("row-selected");
     }
+
     /**
-     * Viết hàm click vao button Sua
-     * Author: TDNAM (22/09/2020)
-     * Edit: TDNAM  (28/09/2020)
-     * TODO: Cần sửa lại
+     * Viết hàm click vao button Xoa dữ liệu Object
+     * Author: TDNAM (1/10/2020)
      * 
      * */
-    btnEditOnClick() {
-
-    }
-    /**
-     * Viết hàm click vao button Xoa
-     * Author: TDNAM (22/09/2020)
-     * TODO: Cần sửa lại
-     * */
     btnDeleteOnClick() {
+        debugger;
+        var objDelete = {};
 
+        //Lấy dữ liệu của khách hàng tương ứng đã chọn
+        //1. Xác định khách hàng nào dã được chọn
+        var trSelected = $("table tr.row-selected");
+        //2. Lấy thông tin theo mã khách hàng
+        if (trSelected.length > 0) {
+            var inputId = $('.indexObj');
+            var objectId = $(trSelected).children()[0].textContent
+            var fieldNameId = $(inputId).attr('fieldName');
+
+            $.each(data, function (index, item) {
+                if (item[fieldNameId] == objectId) {
+                    objDelete = item;
+                }
+            })
+
+            //Xóa thông tin Customer đã chọn
+            for (var i = 0; i < data.length; i++) {
+                if (data[i] === objDelete) {
+                    data.splice(i, 1);
+                    this.loadData();
+                }
+            }
+        } else {
+            alert('Bạn chưa chọn khách hàng nào, Vui lòng chọn để xóa');
+        }
     }
-    
+
 }
 
 

@@ -38,77 +38,7 @@ class Customer extends BaseJS {
     getData() {
         this.Data = data;
     }
-    /**
-    * Hàm click Edit Customer
-    * Author: TDNAM (28/09/2020)
-    * */
-    btnEditOnClick() {
-        debugger;
-        this.Getbutton = 2;
-        var self = this;
-        var cusEdit;
-        //Lấy dữ liệu của khách hàng tương ứng đã chọn
-        //1. Xác định khách hàng nào dã được chọn
-        var trSelected = $("#tbCustomer tr.row-selected");
-        //2. Lấy thông tin theo mã khách hàng
-        if (trSelected.length > 0) {
-            //Hiển thị form chi tiết:
-            this.showDialogDetail();
-            var customerId = $(trSelected).children()[0].textContent
-            $.each(data, function (index, item) {
-                if (item.CustomerId == customerId) {
-                    cusEdit = item;
-                }
-            })
-            // binding các thông tin của khách hàng lên form
-
-            $("#txtCustomerId").val(cusEdit.CustomerId);
-            $("#txtCustomerName").val(cusEdit.CustomerName);
-            $("#txtManageName").val(cusEdit.ManageName);
-            $("#txtTaxId").val(cusEdit.TaxId);
-            $("#txtAddress").val(cusEdit.Address);
-            $("#txtPhoneNumber").val(cusEdit.Phone);
-            $("#txtEmail").val(cusEdit.Email);
-            $("#txtDateOfBirth").val(cusEdit.DateOfBirth.toISOString().substring(0, 10));
-
-            //chỉnh sửa thông tin trên form
-        } else {
-            alert('Bạn chưa chọn khách hàng nào, Vui lòng chọn để sửa');
-        }
-    }
     
-    /**
-     * Viết hàm click vao button Xoa Customer
-     * Author: TDNAM (28/09/2020)
-     * 
-     * */
-    btnDeleteOnClick() {
-        debugger;
-        var cusDelete;
-
-        //Lấy dữ liệu của khách hàng tương ứng đã chọn
-        //1. Xác định khách hàng nào dã được chọn
-        var trSelected = $("#tbCustomer tr.row-selected");
-        //2. Lấy thông tin theo mã khách hàng
-        if (trSelected.length > 0) {
-            var customerId = $(trSelected).children()[0].textContent
-            $.each(data, function (index, item) {
-                if (item.CustomerId == customerId) {
-                    cusDelete = item;
-                }
-            })
-
-            //Xóa thông tin Customer đã chọn
-            for (var i = 0; i < data.length; i++) {
-                if (data[i] === cusDelete) {
-                    data.splice(i, 1);
-                    this.loadData();
-                }
-            }
-        } else {
-            alert('Bạn chưa chọn khách hàng nào, Vui lòng chọn để xóa');
-        }
-    }
     
 }
 
