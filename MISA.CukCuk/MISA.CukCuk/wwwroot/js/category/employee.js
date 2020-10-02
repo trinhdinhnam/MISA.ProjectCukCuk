@@ -159,44 +159,44 @@ var data = [
     {
         EmployeeId: "NV9248484",
         EmployeeName: "Phạm Minh Sang",
-        Gender: "Nam",
+        Gender: 1,
         DateOfBirth: new Date('1998-03-17'),
         Email: "sang2378@gmail.com",
         PositionName: "Giám đốc",
-        DepartmentName: "Phòng đào tạo",
+        DepartmentName: 1,
         Salary: 20000000,
-        WorkStatus: "Đang làm việc"
+        WorkStatus: 1
     },
     {
         EmployeeId: "NV9499434",
         EmployeeName: "Trịnh Đình Nam",
-        Gender: "Nam",
+        Gender: 1,
         DateOfBirth: new Date('1998-08-16'),
         Email: "nam168@gmail.com",
         PositionName: "Phó Giám đốc",
-        DepartmentName: "Phòng đào tạo",
+        DepartmentName: 2,
         Salary: 21200000,
-        WorkStatus: "Đang làm việc"
+        WorkStatus: 1
     }, {
         EmployeeId: "NV48384343",
         EmployeeName: "Hoàng Phi Hùng",
-        Gender: "Nam",
+        Gender: 1,
         DateOfBirth: new Date('1998-09-17'),
         Email: "hunghp123@gmail.com",
         PositionName: "Trưởng phòng",
-        DepartmentName: "Phòng đào tạo",
+        DepartmentName: 3,
         Salary: 16000000,
-        WorkStatus: "Đang làm việc"
+        WorkStatus: 1
     }, {
         EmployeeId: "NV4834344",
         EmployeeName: "Lê Thị Tuyết",
-        Gender: "Nữ",
+        Gender: 0,
         DateOfBirth: new Date('1998-02-17'),
         Email: "tuyetd13@gmail.com",
         PositionName: "Nhân viên",
-        DepartmentName: "Phòng đào tạo",
+        DepartmentName: 2,
         Salary: 12000000,
-        WorkStatus: "Đang làm việc"
+        WorkStatus: 1
     },
 ]
 

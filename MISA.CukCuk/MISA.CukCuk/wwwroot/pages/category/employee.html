@@ -215,11 +215,7 @@
                 <input fieldName="EmployeeName" class="employee-name-input required" required id="txtEmployeeName" type="text" />
 
             </div>
-            <div class="member-id">
-                <div class="member-id-text">Mã thẻ thành viên</div>
-                <input class="member-id-input" id="txtMemberId" type="text" />
 
-            </div>
             <div class="clear"></div>
 
             <div class="employee-group">
@@ -234,38 +230,58 @@
             <div class="clear"></div>
             <div class="phone">
                 <div class="phone-text">ĐT di động (*)</div>
-                <input class="phone-input required" required id="txtPhoneNumber" type="tel" />
+                <input fieldName="Phone" class="phone-input required" required id="txtPhoneNumber" type="tel" />
 
             </div>
 
             <div class="birth">
                 <div class="birth-text">Ngày sinh</div>
-                <input type="date" class="birth-input" />
+                <input fieldName="DateOfBirth" type="date" class="birth-input" />
 
             </div>
-            <div class="manage-name">
-                <div class="manage-name-text">Tên công ty</div>
-                <input class="manage-name-input" id="txtManageName" type="text" />
+            <div class="gender">
+                <div class="gender-text">Giới tính</div>
+                <select fieldName="Gender" class="gender-employee-selected">
+                    <option value="1">Nam</option>
+                    <option value="0">Nữ</option>
 
+                </select>
             </div>
-            <div class="tax-id">
-                <div class="tax-id-text">Mã số thuế</div>
-                <input class="tax-id-input" id="txtTaxId" type="text" />
-            </div>
-
             <div class="email">
                 <div class="email-text">Email</div>
-                <input class="email-input" id="txtEmail" type="email" />
-            </div>
-            <div class="address">
-                <div class="address-text">Địa chỉ</div>
-                <input class="address-input" id="txtAddress" type="text" />
-            </div>
-            <div class="note">
-                <div class="note-text">Ghi chú</div>
-                <textarea class="note-input" type="text"></textarea>
+                <input fieldName="Email" class="email-input" id="txtEmail" type="email" />
             </div>
 
+            <div class="position-name">
+                <div class="position-name-text">Vị trí</div>
+                <input fieldName="PositionName" class="position-name-input" id="txtPosition" type="text" />
+            </div>
+            <div class="clear"></div>
+
+            <div class="department-name">
+                <div class="department-name-text">Phòng ban</div>
+                <select fieldName="DepartmentName" class="department-name-selected">
+                    <option value="1">Phòng đào tạo</option>
+                    <option value="2">Phòng nghiên cứu</option>
+                    <option value="3">Phòng nhân sự</option>
+                </select>
+            </div>
+            <div class="clear"></div>
+
+            <div class="salary">
+                <div class="salary-text">Mức lương</div>
+                <input fielName="Salary" class="salary-input" id="txtSalary" type="number" />
+
+            </div>
+            <div class="clear"></div>
+
+            <div class="work-status">
+                <div class="work-status-text">Tình trạng công việc</div>
+                <select fieldName="WorkStatus" class="work-status-selected">
+                    <option value="1">Đang làm việc</option>
+                    <option value="2">Đã nghỉ làm</option>
+                </select>
+            </div>
             <div class="toolbar-dialog">
                 <button class="btn-help"><i class="icon-dialog icon-help-dialog"></i>Giúp</button>
                 <button class="btn-store"><i class="icon-dialog icon-store-dialog"></i>Cất</button>

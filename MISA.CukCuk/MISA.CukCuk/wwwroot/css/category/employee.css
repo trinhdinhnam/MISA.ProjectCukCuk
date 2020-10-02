@@ -1,4 +1,8 @@
-﻿/* Dialog title css*/
+﻿p{
+    color: #f00;
+    float: left;
+}
+/* Dialog title css*/
 
 .dialog-form .dialog-title .dialog-title-text {
     color: #ffffff;
@@ -33,6 +37,7 @@
     display: flex;
     float: left;
     margin: 5px;
+    margin-left: 15px;
 }
 
     .dialog-content .employee-name .employee-name-text {
@@ -41,21 +46,6 @@
 
     .dialog-content .employee-name .employee-name-input {
         width: 146px;
-    }
-/*member id*/
-
-.dialog-content .member-id {
-    margin: 5px;
-    display: flex;
-    float: left;
-}
-
-    .dialog-content .member-id .member-id-text {
-        margin-right: 25px;
-    }
-
-    .dialog-content .member-id .member-id-input {
-        width: 145px;
     }
 
 /*employee group*/
@@ -121,39 +111,30 @@
     }
 
     .dialog-content .birth .birth-input {
-        width: 148px;
+        width: 150px;
+        border: 1px solid #c6c2c2;
+        height: 22px;
+        font-size: 14px;
     }
 
-/*manage name*/
+/*gender css*/
 
-.dialog-content .manage-name {
+.dialog-content .gender {
     margin: 5px;
     display: flex;
 }
 
-    .dialog-content .manage-name .manage-name-text {
-        margin-right: 65px;
+    .dialog-content .gender .gender-text {
+        margin-right: 90px;
     }
 
-    .dialog-content .manage-name .manage-name-input {
-        width: 453px;
+    .dialog-content .gender .gender-employee-selected {
+        width: 153px;
+        border: 1px solid #c6c2c2;
+        height: 22px;
+        font-size: 14px;
     }
 
-/* tax id*/
-
-.dialog-content .tax-id {
-    margin: 5px;
-    float: left;
-    display: flex;
-}
-
-    .dialog-content .tax-id .tax-id-text {
-        margin-right: 71px;
-    }
-
-    .dialog-content .tax-id .tax-id-input {
-        width: 146px;
-    }
 
 /*Email*/
 
@@ -164,41 +145,85 @@
 }
 
     .dialog-content .email .email-text {
-        margin-right: 103px;
+        margin-right: 110px;
     }
 
     .dialog-content .email .email-input {
         width: 146px;
     }
-/*address*/
+/*Position css*/
 
-.dialog-content .address {
+.dialog-content .position-name {
+    margin: 5px;
+    display: flex;
+    float: left;
+    margin-left: 15px;
+}
+
+.dialog-content .position-name .position-name-text {
+    margin-right: 102px;
+}
+
+.dialog-content .position-name .position-name-input {
+    width: 146px;
+}
+
+/*Department css*/
+
+.dialog-content .department-name {
     margin: 5px;
     display: flex;
     float: left;
 }
 
-    .dialog-content .address .address-text {
-        margin-right: 98px;
+    .dialog-content .department-name .department-name-text {
+        margin-right: 75px;
     }
 
-    .dialog-content .address .address-input {
-        width: 455px;
-    }
-/*note*/
-
-.dialog-content .note {
-    margin: 5px;
-    display: flex;
-    float: left;
-}
-
-    .dialog-content .note .note-text {
-        margin-right: 100px;
-    }
-
-    .dialog-content .note .note-input {
-        width: 453px;
-        height: 40px;
+    .dialog-content .department-name .department-name-selected {
+        width: 154px;
+        height: 22px;
         border: 1px solid #c6c2c2;
+        font-size: 14px;
     }
+/*WorkStatus css*/
+
+.dialog-content .work-status {
+    margin: 5px;
+    display: flex;
+    float: left;
+}
+
+    .dialog-content .work-status .work-status-text {
+        margin-right: 9px;
+    }
+
+    .dialog-content .work-status .work-status-selected {
+        width: 156px;
+        height: 22px;
+        border: 1px solid #c6c2c2;
+        font-size: 14px;
+    }
+
+/*Salary css*/
+
+.dialog-content .salary {
+    margin: 5px;
+    display: flex;
+    float: left;
+}
+
+    .dialog-content .salary .salary-text {
+        margin-right: 75px;
+    }
+
+    .dialog-content .salary .salary-input {
+        width: 150px;
+        height: 20px;
+        border: 1px solid #c6c2c2;
+        font-size: 14px;
+    }
+
+.dialog-content .toolbar-dialog{
+    padding-top:30px;
+}
