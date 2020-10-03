@@ -4,6 +4,7 @@
     width: 250px;
     height: 100vh;
     background-color: #0973b9;
+
 }
 
 /*menu logo*/
@@ -21,15 +22,17 @@
     background-repeat: no-repeat;
     background-position: 20px 15px;
 }
-
-#logo .logo-text {
-    float: left;
-    height: 100%;
-    width: calc(100% - 50px);
-    background-image: url('../../content/images/logo-text.png');
-    background-repeat: no-repeat;
-    background-position: left;
-}
+    #logo .iconbar:hover{
+        cursor: pointer;
+    }
+    #logo .logo-text {
+        float: left;
+        height: 100%;
+        width: calc(100% - 50px);
+        background-image: url('../../content/images/logo-text.png');
+        background-repeat: no-repeat;
+        background-position: left;
+    }
 
 /*Menu item*/
 #menu-content {

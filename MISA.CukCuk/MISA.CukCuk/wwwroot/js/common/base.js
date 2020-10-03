@@ -39,7 +39,7 @@ class BaseJS {
                     debugger;
                     var fieldName = $(field).attr('fieldName');
                     var td;
-                    var value = null;
+                    var value;
                     switch (fieldName) {
                         case 'DateOfBirth':
                             value = commonJS.formatDate(obj[fieldName]);
@@ -48,11 +48,13 @@ class BaseJS {
                         case 'Salary':
                             value = commonJS.formatMoney(obj[fieldName]);
                             break;
+
                         default:
                             value = obj[fieldName];
-
                             break;
                     }
+                    //value = obj[fieldName];
+
                     td = $(`<td>` + value + `</td>`);
 
                     $(tr).append(td);
@@ -93,7 +95,7 @@ class BaseJS {
         $('.toolbar-btn-del').click(this.btnDeleteOnClick.bind(this));
         $("table tbody").on("click", "tr", this.rowClickTable);
         $('#toolbar-btn-load').click(this.btnReloadOnClick.bind(this));
-
+        $('#iconbar').click(this.btnCloseMenu.bind(this));
 
     }
     //#region "Các sự kiện button"
@@ -132,13 +134,12 @@ class BaseJS {
                     objEdit = item;
                 }
             })
-            // binding các thông tin của khách hàng lên form
-            var inputs = $('input[fieldName]');
+            // binding các thông tin của đối tượng lên form dialog
+            var inputs = $('input[fieldName], select[fieldName]');
             $.each(inputs, function (index, input) {
                 var fieldName = $(input).attr('fieldName');
                 if (fieldName == 'DateOfBirth') {
                     $(input).val(objEdit[fieldName].toISOString().substring(0, 10));
-
                 } else {
                     $(input).val(objEdit[fieldName]);
 
@@ -166,6 +167,7 @@ class BaseJS {
         //validate dữ liệu trên form( Kiểm tra dữ liệu nhập trên form có dúng hay không)
         //1. Kiểm tra các trường bắt buôc nhập trên form dialog
         var isValid = true;
+        var inputRequired = $('input[required]');
         $.each(inputRequired, function (index, input) {
             if (!validData.validateRequired(input)) {
                 isValid = false;
@@ -194,11 +196,11 @@ class BaseJS {
             debugger
             if (isCheckEmail) {
                 if (this.formMode == 1) {
-                    //Khi gia trij formMode la 1 thì nút cất là Thêm
+                    //Khi giá trị của formMode la 1 thì nút cất là Thêm
                     if (isDuplicate) {
                         debugger
                         //Build Object cần lưu:
-                        var inputs = $('input[fieldName]');
+                        var inputs = $('input[fieldName], select[fieldName]');
                         var objAdd = {};
                         $.each(inputs, function (index, input) {
                             var fieldName = $(input).attr('fieldName');
@@ -224,10 +226,12 @@ class BaseJS {
                     }
                 }
                 else if (this.formMode == 2) {
+                    //Khi giá trị của formMode la 2 thì nút cất là Update
+
                     var inputId = $('.indexObj');
                     var fieldNameId = $(inputId).attr('fieldName');
-                    var inputs = $('input[fieldName]');
-
+                    var inputs = $('input[fieldName], select[fieldName]');
+                    //Thực hiện lưu dữ liệu trên form về Database
                     var objIndex = data.findIndex((obj => obj[fieldNameId] == inputId.val()));
                     $.each(inputs, function (index, input) {
                         var fieldName = $(input).attr('fieldName');
@@ -239,6 +243,8 @@ class BaseJS {
                             data[objIndex][fieldName] = value;
                         }
                     })
+
+                    //Xử lý sau khi lưu dữ liệu:
                     self.getData();
                     self.loadData();
                     self.Refresh();
@@ -270,8 +276,9 @@ class BaseJS {
     showDialogDetail() {
         $('.modal').show();
         $('.dialog-form').show();
-        $("#txtCustomerId").focus();
+        var inputId = $('.indexObj');
 
+        inputId.focus();
     }
     /**
      * Ẩn dialog chi tiết
@@ -340,6 +347,13 @@ class BaseJS {
         } else {
             alert('Bạn chưa chọn khách hàng nào, Vui lòng chọn để xóa');
         }
+    }
+    /**
+     * Viết hàm đóng menu khi click vào iconbar
+     * Author: TDNAM (03/10/2020)
+     * */
+    btnCloseMenu() {
+        $('.menu').hide();
     }
 
 }

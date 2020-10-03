@@ -15,6 +15,9 @@ class Customer extends BaseJS {
      *  Hàm lấy data của Customer
      * Author: TDNAM (27/09/2020)
      * */
+    getData() {
+        this.Data = data;
+    }
     /**
      *  Hàm InitEvent kế thừa lớp BaseJS
      * Author: TDNAM (30/09/2020)
@@ -35,9 +38,7 @@ class Customer extends BaseJS {
     }
 
 
-    getData() {
-        this.Data = data;
-    }
+    
     
     
 }
